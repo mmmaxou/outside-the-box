@@ -60,6 +60,10 @@ h1 {
   display: none;
 }
 
+.game-text-input:after {
+  content: attr(data-clue);
+}
+
 
 /* Buttons */
 

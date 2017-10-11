@@ -55,11 +55,17 @@ function GameLogic() {
 }
 
 function GameInput() {
-  var self = {}
+  var self = {
+    selector: "#game-text-input"
+  }
 
   self.currentText = ""
   self.onInput = function (e) {
     console.log(e.key)
+  }
+  self.setClue = function (clue) {
+    $(self.selector).attr("data-clue", clue)
+
   }
 
 
