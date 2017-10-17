@@ -60,8 +60,9 @@ h1 {
   display: none;
 }
 
-.game-text-input:after {
-  content: attr(data-clue);
+#game-text-input {
+  padding: 15px;
+  width: 0;
 }
 
 
