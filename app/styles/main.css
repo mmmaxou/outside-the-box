@@ -53,6 +53,12 @@ h1 {
   border-color: #222;
 }
 
+.floating-text {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+}
+
 
 /* Elements*/
 

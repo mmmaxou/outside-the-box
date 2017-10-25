@@ -17,10 +17,9 @@ $(document).ready(function () {
     }
   });
 
-
   var triggerTimer = 0
-  // var triggerTimer = 2000
-  /// Trigger the introduction animation on the first Click
+    // var triggerTimer = 2000
+    /// Trigger the introduction animation on the first Click
   $('.canvas-interactive-wrapper button')
     .click(function () {
       $(this).hide()
@@ -47,23 +46,23 @@ function GameLogic() {
 
   self.running = false
   self.input = null
-  // Start the game
+    // Start the game
   self.start = function () {
     self.running = true
-    self.fetchWords()
-    self.wordFetchingInterval = setInterval(function () {
-      self.fetchWords()
-    }, 3000)
+
+    // fetch 2 words to always have something to type
+    self.fetchWord()
+    self.fetchWord()
   }
 
   // Use Wordnik API to fetch words
   // http://www.wordnik.com/
-  self.fetchWords = function () {
+  self.fetchWord = function () {
     const minLen = 3
     const maxLen = 8
 
     $.ajax({
-        url: 'http://api.wordnik.com:80/v4/words.json/randomWord?hasDictionaryDef=false&minCorpusCount=0&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=' + minLen + '&maxLength=' + maxLen + '&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5'
+        url: `http://api.wordnik.com:80/v4/words.json/randomWord?hasDictionaryDef=false&minCorpusCount=0&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=${minLen}&maxLength=${maxLen}&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5`
       })
       .done(function (data) {
         // Satanize the word fetched to escape special chars
@@ -82,26 +81,63 @@ function GameInput() {
   var self = {
     selector: "#game-text-input",
     wordsToAvoid: [],
+    timeTaken: [],
     uniqId: 0,
+    score: 0,
   }
 
+
+  // Input handler called every time a key is pressed
   self.onInput = function (e) {
-    console.log(e.key)
+    let value = String.fromCharCode(e.which)
 
-    // Check if the first need to be deleted
-    if (self.wordsToAvoid[0].toDelete) {
-      self.wordsToAvoid.shift()
-    }
-
-    // Try to attack each words stored using the letter pressed
-    self.wordsToAvoid[0].attack(e.key)
+    // Try to attack the first word stored using the letter pressed
+    self.wordsToAvoid[0].attack(value)
   }
+
+  // Add a new word
   self.addWord = function (word) {
     if (word && typeof word == "string") {
       self.wordsToAvoid.push(new Word(word, self.uniqId++))
     } else {
       console.error("Wrong input: ", word)
     }
+  }
+
+  // Delete the first word on self.wordsToAvoid
+  self.deleteFirstWord = function () {
+
+    self.computeScore()
+
+    // Delete
+    self.wordsToAvoid.shift()
+
+  }
+
+  self.computeScore = function () {
+
+    // Compute time taken
+    let w = self.wordsToAvoid[0]
+    let timeTaken = w.endTimecode - w.startTimecode
+    timeTaken = Math.round(timeTaken)
+    let seconds = (timeTaken / 1000).toFixed(2)
+
+    // Compute score
+    let len = w.text.length
+
+    // average char per seconds
+    const avgTypingSpeed = 200 / 60
+
+    /// TODO
+
+    let score = timeTaken / l
+    score = Math.round(score)
+    self.score += score
+
+
+    // Display the time
+    $('#time-taken').text(seconds + " secs")
+    $('#score').text("Score: " + self.score)
   }
 
 
@@ -112,10 +148,14 @@ function GameInput() {
 function Word(text, id) {
   var self = {
     text: text || "unknown",
-    toDelete: false,
     DOM_selector: '.word-list',
     id: id,
     nextCharId: 0,
+    startTimecode: performance.now(),
+    endTimecode: undefined,
+    /// Hardcoded parent ///
+    parent: gameInput,
+    logic: gameLogic,
   }
 
   /// Graphical interface
@@ -126,7 +166,6 @@ function Word(text, id) {
     $(`${self.DOM_selector} #${self.id}`).text(self.text.substr(self.nextCharId))
   }
   self.delete = function () {
-    self.toDelete = true
     $(`${self.DOM_selector} #${self.id}`).remove()
   }
 
@@ -144,6 +183,10 @@ function Word(text, id) {
     if (letter.toLowerCase() === self.text.charAt(self.nextCharId).toLowerCase()) {
       self.nextCharId++;
       if (self.nextCharId == self.text.length) {
+        // Delete the word
+        self.endTimecode = performance.now()
+        self.logic.fetchWord()
+        self.parent.deleteFirstWord()
         self.delete()
       } else {
         self.update()
