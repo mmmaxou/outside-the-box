@@ -192,7 +192,6 @@ function Word(text, id) {
         self.update()
       }
     }
-
   }
 
 
