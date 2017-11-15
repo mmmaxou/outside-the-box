@@ -60,6 +60,21 @@ h1 {
 }
 
 
+/* PROGRESS BAR */
+
+#progress-bar {
+  width: 100%;
+  background-color: #f5f5f5;
+}
+
+#bar {
+  width: 1%;
+  height: 30px;
+  background-color: #34b134;
+  transition: width 100ms linear;
+}
+
+
 /* Elements*/
 
 .game {
@@ -78,4 +93,39 @@ h1 {
   padding: 15px;
   font-size: 1.2em;
   margin: 15px;
+}
+
+
+/* THROW TEXT */
+
+.throwText {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  color: green;
+  font-size: 100px;
+  font-weight: bold;
+  animation: bounce-destroy 600ms ease;
+  animation-fill-mode: forwards;
+  z-index: 3;
+}
+
+@keyframes bounce-destroy {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  40% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  70% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.6);
+    opacity: 0;
+    top: 45%;
+  }
 }
