@@ -130,7 +130,6 @@ function GameInput() {
     let len = w.text.length
     let delta = seconds - w.avgTime
 
-
     // HARDCODED multiplier
     const MULTIPLIER = 10
     let score = 1
@@ -139,6 +138,12 @@ function GameInput() {
       score = Math.round(score)
       throwText("+" + score)
     }
+
+    // Compute errors
+    const ERR_MULTIPLIER = 5
+    let errors = w.errors
+    score -= errors * ERR_MULTIPLIER
+
     score = Math.round(score)
     self.score += score
 
@@ -146,6 +151,18 @@ function GameInput() {
     // Display the time
     $('#time-taken').text(seconds + " secs")
     $('#score').text("Score: " + self.score)
+  }
+
+  self.animateError = function () {
+    if (self.isAnimating)
+      return
+
+    self.isAnimating = true
+    $(self.selector).addClass("error-animation")
+    setTimeout(function () {
+      $(self.selector).removeClass("error-animation")
+      self.isAnimating = false
+    }, 200)
   }
 
   // Animate Progress bar
@@ -183,6 +200,7 @@ function Word(text, id) {
     startTimecode: performance.now(),
     endTimecode: undefined,
     avgTime: undefined,
+    errors: 0,
     /// Hardcoded parent ///
     parent: gameInput,
     logic: gameLogic,
@@ -225,6 +243,12 @@ function Word(text, id) {
       } else {
         self.update()
       }
+    } else {
+      /// It is not the right letter, hence it is an error
+      self.errors++;
+      // Animate the error
+      self.parent.animateError()
+
     }
   }
 
@@ -234,66 +258,3 @@ function Word(text, id) {
 
 var gameLogic = new GameLogic()
 var gameInput = new GameInput()
-
-
-
-/* HELPERS */
-function getRandomArrayElement(arr) {
-  return arr[Math.floor(Math.random() * arr.length)];
-}
-var Text = {
-  queue: [],
-  throwText: function (text = "0x") {
-    this.queue.push(text)
-    this.dequeue()
-  },
-  run: function (text = "0x") {
-    var id = new Date()
-    id = id.getTime()
-    $('body')
-      .append("<span class='throwText' id='" + id + "'>" + text + "</div>")
-    $('#' + id)
-      .css('color', getRandomColor())
-      .css('font-size', 80 + randInt(-30, 30))
-    setTimeout(function () {
-      $('#' + id)
-        .remove()
-    }, 700)
-  },
-  dequeue: function () {
-    if (this.queueing) {
-      return
-    }
-    this.queueing = true
-    var self = this
-    this.id = setInterval(function () {
-      var t = self.queue.shift()
-      if (!t) {
-        self.queueing = false
-        clearInterval(self.id)
-      } else {
-        self.run(t)
-      }
-    }, 300)
-  },
-  stop: function () {
-    this.queue = []
-  }
-}
-
-function throwText(text = "0x") {
-  Text.throwText(text)
-}
-
-function randInt(min = 0, max = 1) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
-function getRandomColor() {
-  var letters = '0123456789ABCDEF';
-  var color = '#';
-  for (var i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
-  }
-  return color;
-}

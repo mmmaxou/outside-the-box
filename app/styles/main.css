@@ -129,3 +129,26 @@ h1 {
     top: 45%;
   }
 }
+
+
+/* ANIMATE ERROR */
+
+.error-animation {
+  animation: error 200ms ease;
+  animation-fill-mode: forwards;
+}
+
+@keyframes error {
+  0% {
+    transform: rotate(15deg);
+  }
+  40% {
+    transform: rotate(0deg);
+  }
+  70% {
+    transform: rotate(-15deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
