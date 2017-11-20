@@ -4,15 +4,15 @@ function getRandomArrayElement(arr) {
 }
 var Text = {
   queue: [],
-  throwText: function (text = "0x") {
+  throwText: function (text = '0x') {
     this.queue.push(text)
     this.dequeue()
   },
-  run: function (text = "0x") {
+  run: function (text = '0x') {
     var id = new Date()
     id = id.getTime()
     $('body')
-      .append("<span class='throwText' id='" + id + "'>" + text + "</div>")
+      .append('<span class=\'throwText\' id=\'' + id + '\'>' + text + '</div>')
     $('#' + id)
       .css('color', getRandomColor())
       .css('font-size', 80 + randInt(-30, 30))
@@ -42,7 +42,7 @@ var Text = {
   }
 }
 
-function throwText(text = "0x") {
+function throwText(text = '0x') {
   Text.throwText(text)
 }
 

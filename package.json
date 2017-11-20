@@ -40,5 +40,9 @@
         "single"
       ]
     }
+  },
+  "scripts": {
+    "gulp": "./node_modules/.bin/gulp",
+    "gulp:serve": "./node_modules/.bin/gulp serve"
   }
 }

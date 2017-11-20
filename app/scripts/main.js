@@ -9,7 +9,7 @@ $(document).ready(function () {
     opacity: [1, 1],
     isPausedWhenNotInView: true,
     states: {
-      "default-state": {
+      'default-state': {
         gradients: [
                 ['#AA076B', '#61045F'],
                 ['#02AAB0', '#00CDAC'],
@@ -29,7 +29,7 @@ $(document).ready(function () {
         .text('Go !')
         .animate({
           opacity: 0,
-          "margin-top": "-=1000"
+          'margin-top': '-=1000'
         }, triggerTimer, function () {
           /// Animation is complete
           $('.game').slideDown()
@@ -85,7 +85,7 @@ function GameLogic() {
 
 function GameInput() {
   var self = {
-    selector: "#game-text-input",
+    selector: '#game-text-input',
     wordsToAvoid: [],
     timeTaken: [],
     uniqId: 0,
@@ -136,7 +136,7 @@ function GameInput() {
     if (delta < 0) {
       score += (-delta) * MULTIPLIER
       score = Math.round(score)
-      throwText("+" + score)
+      throwText('+' + score)
     }
 
     // Compute errors
@@ -149,8 +149,8 @@ function GameInput() {
 
 
     // Display the time
-    $('#time-taken').text(seconds + " secs")
-    $('#score').text("Score: " + self.score)
+    $('#time-taken').text(seconds + ' secs')
+    $('#score').text('Score: ' + self.score)
   }
 
   self.animateError = function () {
@@ -158,9 +158,9 @@ function GameInput() {
       return
 
     self.isAnimating = true
-    $(self.selector).addClass("error-animation")
+    $(self.selector).addClass('error-animation')
     setTimeout(function () {
-      $(self.selector).removeClass("error-animation")
+      $(self.selector).removeClass('error-animation')
       self.isAnimating = false
     }, 200)
   }
@@ -193,7 +193,7 @@ function GameInput() {
 function Word(text, id) {
 
   var self = {
-    text: text || "unknown",
+    text: text || 'unknown',
     DOM_selector: '.word-list',
     id: id,
     nextCharId: 0,
@@ -228,7 +228,7 @@ function Word(text, id) {
   self.attack = function (letter) {
 
     /// Check if the input fit
-    if (!letter || typeof letter != "string") {
+    if (!letter || typeof letter != 'string') {
       return
     }
 
