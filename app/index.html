@@ -2,71 +2,77 @@
 <html lang="">
 
 <head>
-  <meta charset="utf-8">
-  <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>outside the box</title>
+	<meta charset="utf-8">
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>outside the box</title>
 
-  <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <!-- Place favicon.ico in the root directory -->
+	<link rel="apple-touch-icon" href="apple-touch-icon.png">
+	<!-- Place favicon.ico in the root directory -->
 
-  <!-- build:css styles/vendor.css -->
-  <!-- bower:css -->
-  <!-- endbower -->
-  <!-- endbuild -->
+	<!-- build:css styles/vendor.css -->
+	<!-- bower:css -->
+	<!-- endbower -->
+	<!-- endbuild -->
 
-  <!--Others Libs-->
-  <link rel="stylesheet" href="styles/reset.css">
-  <link href="https://fonts.googleapis.com/css?family=Nova+Flat" rel="stylesheet">
+	<!--Others Libs-->
+	<link rel="stylesheet" href="styles/reset.css">
+	<link href="https://fonts.googleapis.com/css?family=Nova+Flat" rel="stylesheet">
 
-  <!-- build:css styles/main.css -->
-  <link rel="stylesheet" href="styles/main.css">
-  <!-- endbuild -->
+	<!-- build:css styles/main.css -->
+	<link rel="stylesheet" href="styles/main.css">
+	<!-- endbuild -->
 
 </head>
 
 <body>
-  <!--[if IE]>
+	<!--[if IE]>
       <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-  <main>
-    <div class="canvas-interactive-wrapper">
-      <canvas id="canvas-1"></canvas>
-      <div class="wrapper-canvas init">
-        <h1>Oui ?</h1>
-        <button class="btn btn-primary">Oui</button>
-      </div>
-      <div class="wrapper-canvas game">
-        <p>This is the game !</p>
-        <input type="text" id="game-text-input" data-clue="base">
-        <p>Words you have to avoid</p>
-        <div id="progress-bar">
-          <div id="bar"></div>
-        </div>
-        <ul class="word-list"></ul>
-      </div>
-      <div class="floating-text">
-        <span id="time-taken">0 secs</span> - | -
-        <span id="score">Score:</span>
-      </div>
-  </main>
+	<main>
+		<div class="canvas-interactive-wrapper">
+			<canvas id="canvas-1"></canvas>
+			<div class="wrapper-canvas init">
+				<h1>Select difficulty and press Start</h1>
+				<button class="btn btn-primary">Start</button>
+			</div>
+			<div class="wrapper-canvas game">
+				<input type="text" id="game-text-input" data-clue="base" placeholder="Focus me to play">
+				<p>Write the words that I send you</p>
+				<div id="progress-bar">
+					<div id="bar"></div>
+				</div>
+				<ul class="word-list"></ul>
+			</div>
+			<div class="floating-text">
+				<span id="time-taken">0 secs</span> ||
+				<span id="score">Score: 0</span> ||
+				<span id="diff">Difficulty: 1</span> ||
+				<span id="timer">00:00:000</span>
+			</div>
+			<div id="difficulty">
+				<p>You can change the difficulty here.</p>
+				<p>The difficulty reduce the time you have to write words, but increase your score.</p>
+				<input type="range" min="1" max="10" value="4">
+			</div>
+	</main>
 
 
-  <!-- build:js scripts/vendor.js -->
-  <!-- bower:js -->
-  <!-- endbower -->
-  <!-- endbuild -->
+	<!-- build:js scripts/vendor.js -->
+	<!-- bower:js -->
+	<!-- endbower -->
+	<!-- endbuild -->
 
-  <!--Others Libs-->
-  <script src="libs/granim/granim.min.js"></script>
-  <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+	<!--Others Libs-->
+	<script src="libs/granim/granim.min.js"></script>
+	<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
 
 
-  <!-- build:js scripts/main.js -->
-  <script src="scripts/helpers.js"></script>
-  <script src="scripts/main.js"></script>
-  <!-- endbuild -->
+	<!-- build:js scripts/main.js -->
+	<script src="scripts/helpers.js"></script>
+	<script src="scripts/main.js"></script>
+	<!-- endbuild -->
 </body>
 
 </html>
