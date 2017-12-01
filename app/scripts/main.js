@@ -11,9 +11,10 @@ $(document).ready(function () {
 		states: {
 			'default-state': {
 				gradients: [
-                ['#AA076B', '#61045F'],
-                ['#02AAB0', '#00CDAC'],
-                ['#DA22FF', '#9733EE']
+                ['#e1f7d5', '#ffbdbd'],
+                ['#ffbdbd', '#c9c9ff'],
+                ['#c9c9ff', '#f1cbff'],
+                ['#f1cbff', '#e1f7d5'],
             ]
 			}
 		}
@@ -22,7 +23,7 @@ $(document).ready(function () {
 	var triggerTimer = 0
 		// var triggerTimer = 2000
 		/// Trigger the introduction animation on the first Click
-	$('.canvas-interactive-wrapper button')
+	$('#start')
 		.click(function () {
 			$(this).hide()
 				.prev()
@@ -51,15 +52,36 @@ $(document).ready(function () {
 		gameInput.setDifficulty(diff)
 	})
 
+	// Button pause logic
+	$('#pause').click(() => {
+		gameLogic.pause()
+	})
+
+	$('#modifiers button').each(function (button) {
+		$(this).text($(this).text() + " | " + $(this).attr("data-price") + "$")
+		$(this).click(function (e) {
+			if (gameInput.score < $(this).attr("data-price")) {
+				throwText("Not enough money !!!")
+			} else {
+				gameInput[$(this).attr("id")]()
+				gameInput.score -= $(this).attr("data-price")
+				gameInput.displayScore()
+				$(this).fadeOut(100)
+			}
+		})
+	})
+
 
 })
 
 function GameLogic() {
-	var self = {}
+	var self = {
+		running: false,
+		input: null,
+		paused: false,
+	}
 
-	self.running = false
-	self.input = null
-		// Start the game
+	// Start the game
 	self.start = function () {
 		self.running = true
 
@@ -71,6 +93,12 @@ function GameLogic() {
 
 		// Hide Diff
 		$('#difficulty').slideUp()
+
+		// Show Pause
+		$('#pause').slideDown()
+
+		// Show Modifiers
+		$('#modifiers').slideDown()
 	}
 
 	// Use Wordnik API to fetch words
@@ -95,6 +123,18 @@ function GameLogic() {
 			})
 	}
 
+	// Pause or UnPause the game
+	self.pause = function () {
+		Timer.pause()
+		if (!self.paused) {
+			$('#pause').text("Unpause")
+		} else {
+			$('#pause').text("Pause")
+		}
+		$('.game').slideToggle()
+		self.paused = !self.paused
+	}
+
 	return self
 }
 
@@ -104,13 +144,16 @@ function GameInput() {
 		wordsToAvoid: [],
 		timeTaken: [],
 		uniqId: 0,
-		score: 0,
+		score: 200,
 		difficulty: 4,
 	}
 
 
 	// Input handler called every time a key is pressed
 	self.onInput = function (e) {
+		if (gameLogic.paused) {
+			return
+		}
 		let value = String.fromCharCode(e.which)
 
 		// Try to attack the first word stored using the letter pressed
@@ -166,8 +209,12 @@ function GameInput() {
 
 
 		// Display the time
-		$('#time-taken').text(seconds + ' secs')
-		$('#score').text('Score: ' + self.score)
+		self.displayScore()
+		$('#time-taken').text(seconds + 's')
+	}
+
+	self.displayScore = function () {
+		$('#score').text(self.score)
 	}
 
 	self.animateError = function () {
@@ -186,9 +233,14 @@ function GameInput() {
 		self.difficulty = diff
 	}
 
+	// MODIFIERS
+	self.twoWords = function () {
+		console.log('coucou')
+	}
+
+
 	// Animate Progress bar
 	self.$bar = $('#bar')
-
 
 	function animateBar(time) {
 		clearInterval(self.id)
@@ -198,6 +250,9 @@ function GameInput() {
 		let width = 100
 		let decrementValue = width / NB_INTERVAL
 		self.id = setInterval(function frame() {
+			if (gameLogic.paused) {
+				return
+			}
 			if (width <= 0) {
 				clearInterval(self.id)
 			} else {
@@ -207,6 +262,7 @@ function GameInput() {
 		}, TIME_INTERVAL);
 	}
 
+	self.displayScore()
 	gameLogic.input = self
 	return self
 }
@@ -283,12 +339,15 @@ var Timer = {
 	milliseconds: 0,
 	selector: "#timer",
 	interval: undefined,
+	paused: false,
 	start() {
 		var n = 7
 		this.interval = setInterval(() => {
-			this.milliseconds += n
-			this.format()
-			this.display()
+			if (!this.paused) {
+				this.milliseconds += n
+				this.format()
+				this.display()
+			}
 		}, n)
 	},
 	display() {
@@ -313,6 +372,9 @@ var Timer = {
 		} else {
 			return val
 		}
+	},
+	pause() {
+		this.paused = !this.paused
 	}
 }
 

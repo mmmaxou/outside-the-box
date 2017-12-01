@@ -17,3 +17,7 @@
 * Basic at the beginning then more complex
 * Words are striking you and you must type to destroy them
 
+# Usage
+
+Developpment mode :
+``` npm run gulp:serve ``` Start the developpment server with Hot-Reload

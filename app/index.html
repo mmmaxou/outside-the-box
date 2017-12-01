@@ -35,7 +35,7 @@
 			<canvas id="canvas-1"></canvas>
 			<div class="wrapper-canvas init">
 				<h1>Select difficulty and press Start</h1>
-				<button class="btn btn-primary">Start</button>
+				<button id="start" class="btn btn-primary">Start</button>
 			</div>
 			<div class="wrapper-canvas game">
 				<input type="text" id="game-text-input" data-clue="base" placeholder="Focus me to play">
@@ -46,15 +46,24 @@
 				<ul class="word-list"></ul>
 			</div>
 			<div class="floating-text">
-				<span id="time-taken">0 secs</span> ||
-				<span id="score">Score: 0</span> ||
-				<span id="diff">Difficulty: 1</span> ||
-				<span id="timer">00:00:000</span>
+				<span id="time-taken">0s</span> ||
+				<span id="score">0</span>$ ||
+				<span id="diff">Difficulty: 4</span> ||
+				<span id="timer">00:00:000</span> ||
+				<button id="pause" class="btn" style="display: none;">Pause</button>
 			</div>
-			<div id="difficulty">
+			<div id="difficulty" class="bottom-fixed">
 				<p>You can change the difficulty here.</p>
 				<p>The difficulty reduce the time you have to write words, but increase your score.</p>
 				<input type="range" min="1" max="10" value="4">
+			</div>
+			<div id="modifiers" class="bottom-fixed" style="display: none;">
+				<p>Here you can buy some modifiers to change your play style</p>
+				<ul>
+					<li>
+						<button id="twoWords" data-price="150">Two words</button>
+					</li>
+				</ul>
 			</div>
 	</main>
 

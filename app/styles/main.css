@@ -27,7 +27,7 @@ h1 {
 	position: relative;
 	height: 100vh;
 	text-align: center;
-	color: white;
+	color: #585858;
 }
 
 .canvas-interactive-wrapper canvas {
@@ -67,7 +67,7 @@ h1 {
 
 /* FLOATING DIFFICULTY ELEMENT */
 
-#difficulty {
+.bottom-fixed {
 	width: 100vw;
 	position: fixed;
 	bottom: 0;
@@ -133,6 +133,7 @@ h1 {
 	position: fixed;
 	top: 50%;
 	left: 50%;
+	transform: translate(-50%, -50%);
 	color: green;
 	font-size: 100px;
 	font-weight: bold;
@@ -143,19 +144,19 @@ h1 {
 
 @keyframes bounce-destroy {
 	0% {
-		transform: scale(0.6);
+		transform: translate(-50%, -50%) scale(0.6);
 		opacity: 0;
 	}
 	40% {
-		transform: scale(1.1);
+		transform: translate(-50%, -50%) scale(1.1);
 		opacity: 1;
 	}
 	70% {
-		transform: scale(1);
+		transform: translate(-50%, -50%) scale(1);
 		opacity: 1;
 	}
 	100% {
-		transform: scale(0.6);
+		transform: translate(-50%, -50%) scale(0.6);
 		opacity: 0;
 		top: 45%;
 	}
