@@ -67,6 +67,7 @@ $(document).ready(function () {
 				gameInput.score -= $(this).attr("data-price")
 				gameInput.displayScore()
 				$(this).fadeOut(100)
+				throwText("Modifier Bought !!!")
 			}
 		})
 	})
@@ -101,6 +102,23 @@ function GameLogic() {
 		$('#modifiers').slideDown()
 	}
 
+	// Pause or UnPause the game
+	self.pause = function () {
+		Timer.pause()
+		if (!self.paused) {
+			$('#pause').text("Unpause")
+		} else {
+			$('#pause').text("Pause")
+		}
+		$('.game').slideToggle()
+		self.paused = !self.paused
+	}
+
+	// Game over
+	self.gameOver = function () {
+		$('.game, .game-over').slideToggle()
+	}
+
 	// Use Wordnik API to fetch words
 	// http://www.wordnik.com/
 	self.fetchWord = function () {
@@ -123,17 +141,6 @@ function GameLogic() {
 			})
 	}
 
-	// Pause or UnPause the game
-	self.pause = function () {
-		Timer.pause()
-		if (!self.paused) {
-			$('#pause').text("Unpause")
-		} else {
-			$('#pause').text("Pause")
-		}
-		$('.game').slideToggle()
-		self.paused = !self.paused
-	}
 
 	return self
 }
@@ -146,6 +153,8 @@ function GameInput() {
 		uniqId: 0,
 		score: 200,
 		difficulty: 4,
+		combo: 0,
+		comboMultiplier: 1,
 	}
 
 
@@ -170,11 +179,23 @@ function GameInput() {
 	// Delete the first word on self.wordsToAvoid
 	self.deleteFirstWord = function () {
 
+		self.computeCombo()
 		self.computeScore()
 		self.addWord()
 			// Delete
 		self.wordsToAvoid.shift()
 
+	}
+
+	self.computeCombo = function () {
+		let w = self.wordsToAvoid[0]
+		if (w.errors != 0) {
+			self.combo = 0
+		} else {
+			self.combo++
+		}
+		self.comboMultiplier = Math.pow(1.15, self.combo)
+		self.comboMultiplier = Number(self.comboMultiplier.toFixed(2))
 	}
 
 	self.computeScore = function () {
@@ -204,9 +225,12 @@ function GameInput() {
 		let errors = w.errors
 		score -= errors * ERR_MULTIPLIER
 
+		// Compute combo
+		score *= self.comboMultiplier
+
+		// Fix score
 		score = Math.round(score)
 		self.score += score
-
 
 		// Display the time
 		self.displayScore()
@@ -214,7 +238,10 @@ function GameInput() {
 	}
 
 	self.displayScore = function () {
-		$('#score').text(self.score)
+		$('.score').text(self.score)
+		if (self.comboMultiplier > 1) {
+			throwText(self.comboMultiplier + "x")
+		}
 	}
 
 	self.animateError = function () {
@@ -334,37 +361,34 @@ function Word(text, id) {
 }
 
 var Timer = {
-	minutes: 0,
-	seconds: 0,
+	time: 6000,
 	milliseconds: 0,
+	seconds: 0,
 	selector: "#timer",
 	interval: undefined,
 	paused: false,
+	stopped: false,
 	start() {
-		var n = 7
+		var n = 10
 		this.interval = setInterval(() => {
-			if (!this.paused) {
-				this.milliseconds += n
+			if (!this.paused && !this.stopped) {
+				this.time -= n
 				this.format()
 				this.display()
+			}
+			if (this.time <= 0) {
+				this.stop()
 			}
 		}, n)
 	},
 	display() {
-		let m = this.toFixed(2, this.minutes)
 		let s = this.toFixed(2, this.seconds)
-		let mm = this.toFixed(3, this.milliseconds)
-		$(this.selector).text(`${m}:${s}:${mm}`)
+		let mm = this.toFixed(2, this.milliseconds / 10)
+		$(this.selector).text(`${s}:${mm}`)
 	},
 	format() {
-		if (this.milliseconds > 1000) {
-			this.milliseconds -= 1000
-			this.seconds++
-		}
-		if (this.seconds > 60) {
-			this.seconds -= 60
-			this.minutes++
-		}
+		this.seconds = Math.round(this.time / 1000)
+		this.milliseconds = this.time % 1000
 	},
 	toFixed(n, val) {
 		if (val < Math.pow(10, n - 1)) {
@@ -375,6 +399,11 @@ var Timer = {
 	},
 	pause() {
 		this.paused = !this.paused
+	},
+	stop() {
+		this.stopped = true
+		gameLogic.gameOver()
+		clearInterval(this.interval)
 	}
 }
 

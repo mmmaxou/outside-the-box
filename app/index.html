@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>outside the box</title>
+	<title>Outside the box</title>
 
 	<link rel="apple-touch-icon" href="apple-touch-icon.png">
 	<!-- Place favicon.ico in the root directory -->
@@ -45,11 +45,17 @@
 				</div>
 				<ul class="word-list"></ul>
 			</div>
+			<div class="wrapper-canvas game-over" style="display: none;">
+				<h1>
+					Game over ! Your score is <span class="score"></span>
+				</h1>
+				<h4>But that was fun, I want to <button id="replay">Play again</button></h4>
+			</div>
 			<div class="floating-text">
 				<span id="time-taken">0s</span> ||
-				<span id="score">0</span>$ ||
+				<span class="score">0</span>$ ||
 				<span id="diff">Difficulty: 4</span> ||
-				<span id="timer">00:00:000</span> ||
+				<span id="timer">--:--</span> ||
 				<button id="pause" class="btn" style="display: none;">Pause</button>
 			</div>
 			<div id="difficulty" class="bottom-fixed">
