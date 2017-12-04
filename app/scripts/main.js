@@ -1,4 +1,5 @@
 var WORDS = []
+var gameLogic, gameInput, timer
 
 $(document).ready(function () {
 
@@ -20,8 +21,7 @@ $(document).ready(function () {
 		}
 	});
 
-	var triggerTimer = 0
-		// var triggerTimer = 2000
+	var triggerTimer = 1500
 		/// Trigger the introduction animation on the first Click
 	$('#start')
 		.click(function () {
@@ -30,7 +30,7 @@ $(document).ready(function () {
 				.text('Go !')
 				.animate({
 					opacity: 0,
-					'margin-top': '-=1000'
+					'margin-top': '-=' + (window.innerHeight / 1.5)
 				}, triggerTimer, function () {
 					/// Animation is complete
 					$('.game').slideDown()
@@ -72,6 +72,20 @@ $(document).ready(function () {
 		})
 	})
 
+	$('#replay').click(() => {
+		initGame()
+		$('.game-over').slideToggle()
+		$('#start')
+			.show()
+			.prev()
+			.text('Select difficulty and press Start')
+			.animate({
+				opacity: 1,
+				'margin-top': '+=' + (window.innerHeight / 1.5)
+			}, triggerTimer)
+		$('#difficulty, #pause, #modifiers').slideToggle()
+	})
+
 
 })
 
@@ -90,21 +104,20 @@ function GameLogic() {
 		self.fetchWord()
 
 		// Start the timer
-		Timer.start()
+		timer.start()
 
 		// Hide Diff
-		$('#difficulty').slideUp()
-
 		// Show Pause
-		$('#pause').slideDown()
-
 		// Show Modifiers
-		$('#modifiers').slideDown()
+		$('#difficulty, #pause, #modifiers').slideToggle()
+
+		// Clean up
+		$('.word-list').empty()
 	}
 
 	// Pause or UnPause the game
 	self.pause = function () {
-		Timer.pause()
+		timer.pause()
 		if (!self.paused) {
 			$('#pause').text("Unpause")
 		} else {
@@ -360,52 +373,58 @@ function Word(text, id) {
 	return self
 }
 
-var Timer = {
-	time: 6000,
-	milliseconds: 0,
-	seconds: 0,
-	selector: "#timer",
-	interval: undefined,
-	paused: false,
-	stopped: false,
-	start() {
-		var n = 10
-		this.interval = setInterval(() => {
-			if (!this.paused && !this.stopped) {
-				this.time -= n
-				this.format()
-				this.display()
+function Timer() {
+	return {
+		time: 6000,
+		milliseconds: 0,
+		seconds: 0,
+		selector: "#timer",
+		interval: undefined,
+		paused: false,
+		stopped: false,
+		start() {
+			var n = 10
+			this.interval = setInterval(() => {
+				if (!this.paused && !this.stopped) {
+					this.time -= n
+					this.format()
+					this.display()
+				}
+				if (this.time <= 0) {
+					this.stop()
+				}
+			}, n)
+		},
+		display() {
+			let s = this.toFixed(2, this.seconds)
+			let mm = this.toFixed(2, this.milliseconds / 10)
+			$(this.selector).text(`${s}:${mm}`)
+		},
+		format() {
+			this.seconds = Math.round(this.time / 1000)
+			this.milliseconds = this.time % 1000
+		},
+		toFixed(n, val) {
+			if (val < Math.pow(10, n - 1)) {
+				return "0" + String(val)
+			} else {
+				return val
 			}
-			if (this.time <= 0) {
-				this.stop()
-			}
-		}, n)
-	},
-	display() {
-		let s = this.toFixed(2, this.seconds)
-		let mm = this.toFixed(2, this.milliseconds / 10)
-		$(this.selector).text(`${s}:${mm}`)
-	},
-	format() {
-		this.seconds = Math.round(this.time / 1000)
-		this.milliseconds = this.time % 1000
-	},
-	toFixed(n, val) {
-		if (val < Math.pow(10, n - 1)) {
-			return "0" + String(val)
-		} else {
-			return val
+		},
+		pause() {
+			this.paused = !this.paused
+		},
+		stop() {
+			this.stopped = true
+			gameLogic.gameOver()
+			clearInterval(this.interval)
 		}
-	},
-	pause() {
-		this.paused = !this.paused
-	},
-	stop() {
-		this.stopped = true
-		gameLogic.gameOver()
-		clearInterval(this.interval)
 	}
 }
 
-var gameLogic = new GameLogic()
-var gameInput = new GameInput()
+function initGame() {
+	gameLogic = new GameLogic()
+	gameInput = new GameInput()
+	timer = new Timer()
+}
+initGame()
