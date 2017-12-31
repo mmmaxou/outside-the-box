@@ -163,7 +163,6 @@ input[type=range]::-ms-fill-upper {
 input[type=range]::-ms-thumb {
   box-shadow: 0.8px 0.8px 1.9px rgba(0, 0, 62, 0.67), 0px 0px 0.8px rgba(0, 0, 88, 0.67);
   border: 1.9px solid rgba(0, 30, 0, 0.57);
-  height: 24px;
   width: 24px;
   border-radius: 50px;
   background: #ffffff;
@@ -204,14 +203,22 @@ input[type=range]:focus::-ms-fill-upper {
 	padding: 15px;
 	width: 100px;
 }
-
-
-/* Buttons */
-
+/** BUTTON */
 .btn {
-	padding: 15px;
-	font-size: 1.2em;
-	margin: 15px;
+  -webkit-border-radius: 5;
+  -moz-border-radius: 5;
+  border-radius: 5px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 20px;
+  background: #608ba8;
+  padding: 12px 20px 10px 20px;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background: #79a1ba;
+  text-decoration: none;
 }
 
 
