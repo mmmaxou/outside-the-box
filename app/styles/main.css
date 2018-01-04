@@ -1,5 +1,6 @@
 body {
 	font-size: 18px;
+	font-family: 'Nova Flat', cursive;
 }
 
 .fullpage {
@@ -20,17 +21,72 @@ h1 {
 	font-size: 220%;
 }
 
-
-/* Canvas */
-
-.canvas-interactive-wrapper {
-	position: relative;
-	height: 100vh;
+#Title{
+	display: block;
+	font-size: 7em;
 	text-align: center;
-	color: #585858;
+	margin: 25px;
+	padding: 25px;
+ 	font-family: 'Montserrat', sans-serif;
+  	letter-spacing: 0.2em;
+  	text-transform: uppercase;
+  	text-shadow: 0px 0px white;
+  	opacity: 0;
+  	animation: revolve3D 2s cubic-bezier(0.47, 0.01, 0, 1.01) forwards 0.2s;
 }
 
-.canvas-interactive-wrapper canvas {
+
+#container{
+	position: absolute;
+	top: 50%;
+	right: 50%;
+	width: 95%;
+	max-width: 900px;
+	min-height: 375px;
+	text-align: center;
+	transform: translate(50%, -50%);
+}
+
+#game-zone{
+	background-color: rgba(255,255,255,0.52);
+	display: flex;
+	opacity: 0;
+	flex-direction: column;
+	justify-content: space-between;
+	border-radius: 15px;
+	box-shadow: 5px 5px 12px #CCC;
+	animation: revolve 2s cubic-bezier(0.47, 0.01, 0, 1.01) forwards 2s;
+}
+
+#game{
+	margin: 25px;
+}
+
+#scoreboard{
+	background-color: whitesmoke;
+	padding: 25px 15px;
+	border-top-left-radius: 15px;
+	border-top-right-radius: 15px;
+	border-bottom: solid #CCC 1px;
+	display: flex;
+	justify-content: space-between;
+}
+
+#informations{
+	align-self: center;
+}
+
+
+#gamefooter{
+	background-color: whitesmoke;
+	padding: 25px 15px;
+	border-bottom-left-radius: 15px;
+	border-bottom-right-radius: 15px;
+	border-top: solid #CCC 1px;
+}
+/* Canvas */
+
+#canvas-1 {
 	position: absolute;
 	display: block;
 	width: 100%;
@@ -41,60 +97,17 @@ h1 {
 	left: 0;
 }
 
-.canvas-interactive-wrapper .wrapper-canvas {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	z-index: 1;
-}
-
-.canvas-interactive-wrapper .wrapper-canvas a.active {
-	border-color: #222;
-}
-
-.floating-text {
-	position: absolute;
-	top: 15px;
-	left: 15px;
-}
-
 .word-list:first-letter {
 	text-transform: uppercase;
 	text-decoration: underline;
 }
 
-
-/* FLOATING DIFFICULTY ELEMENT */
-
-.bottom-fixed {
-	width: 100vw;
-	position: fixed;
-	bottom: 0;
-	background-color: rgba(0, 0, 0, 0.2);
-	height: 100px;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	-webkit-flex-direction: column;
-	-moz-flex-direction: column;
-	-ms-flex-direction: column;
-	-o-flex-direction: column;
-	flex-direction: column;
-	padding: 10px;
-}
-
-
-#difficulty input {
-	width: 50%;
-	color: black;
-	cursor: move;
-}
+/** Custom range **/
 
 input[type=range] {
   -webkit-appearance: none;
-  width: 100%;
-  margin: 8.55px 0;
+  width: 95%;
+  margin: 30px 15px 15px 15px;
 }
 input[type=range]:focus {
   outline: none;
@@ -193,49 +206,27 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 
-/* Elements*/
-
-.game {
-	display: none;
-}
-
-#game-text-input {
-	padding: 15px;
-	width: 100px;
-}
 /** BUTTON */
-.btn {
-  -webkit-border-radius: 5;
-  -moz-border-radius: 5;
-  border-radius: 5px;
-  font-family: Arial;
-  color: #ffffff;
+.btn, button {
+  -webkit-border-radius: 15px;
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+  color: #000000;
   font-size: 20px;
-  background: #608ba8;
+  background: #ffffff;
   padding: 12px 20px 10px 20px;
+  margin: 15px;
   text-decoration: none;
 }
 
-.btn:hover {
-  background: #79a1ba;
+.btn:hover, button:hover {
+  background: #eeeeee;
   text-decoration: none;
 }
 
 
 /* THROW TEXT */
 
-.throwText {
-	position: fixed;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	color: green;
-	font-size: 100px;
-	font-weight: bold;
-	animation: bounce-destroy 600ms ease;
-	animation-fill-mode: forwards;
-	z-index: 3;
-}
 
 @keyframes bounce-destroy {
 	0% {
@@ -277,5 +268,28 @@ input[type=range]:focus::-ms-fill-upper {
 	}
 	100% {
 		transform: rotate(0deg);
+	}
+}
+
+@keyframes revolve3D {
+  to {
+    opacity: 1;
+    text-shadow: 	-2px 1px white,
+					-3px 2px white,
+					-4px 3px white, 
+					-5px 4px white, 
+					-6px 5px white, 
+					-7px 6px white, 
+					-8px 7px white,
+					-9px 8px white,
+					-10px 9px white,
+					-11px 10px white, 
+					-12px 11px white;
+  }
+}
+
+@keyframes revolve {
+  to {
+    opacity: 1;
 	}
 }
