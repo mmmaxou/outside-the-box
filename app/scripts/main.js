@@ -39,7 +39,7 @@ $(document).ready(function () {
 		})
 		//.click()
 
-	$('#game-text-input').on('keydown', function (e) {
+	$('body').on('keydown', function (e) {
 		gameInput.onInput(e)
 		e.preventDefault()
 		return 0
@@ -311,7 +311,7 @@ function Word(text, id) {
 
 	var self = {
 		text: text || 'unknown',
-		DOM_selector: '.word-list',
+		DOM_selector: '#word-list',
 		id: id,
 		nextCharId: 0,
 		startTimecode: performance.now(),
@@ -375,7 +375,7 @@ function Word(text, id) {
 
 function Timer() {
 	return {
-		time: 6000,
+		time: 60000,
 		milliseconds: 0,
 		seconds: 0,
 		selector: "#timer",
