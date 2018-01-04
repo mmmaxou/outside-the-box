@@ -60,6 +60,9 @@ h1 {
 
 #game{
 	margin: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #scoreboard{
@@ -217,6 +220,7 @@ input[type=range]:focus::-ms-fill-upper {
   padding: 12px 20px 10px 20px;
   margin: 15px;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .btn:hover, button:hover {
@@ -226,6 +230,19 @@ input[type=range]:focus::-ms-fill-upper {
 
 
 /* THROW TEXT */
+
+.throwText {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	color: green;
+	font-size: 100px;
+	font-weight: bold;
+	animation: bounce-destroy 600ms ease;
+	animation-fill-mode: forwards;
+	z-index: 3;
+}
 
 
 @keyframes bounce-destroy {
