@@ -57,7 +57,9 @@ $(document).ready(function () {
 		gameLogic.pause()
 	})
 
-	$('#modifiers button').each(function (button) {
+	/*
+  NOT IMPLEMENTED
+  $('#modifiers button').each(function (button) {
 		$(this).text($(this).text() + " | " + $(this).attr("data-price") + "$")
 		$(this).click(function (e) {
 			if (gameInput.score < $(this).attr("data-price")) {
@@ -71,6 +73,8 @@ $(document).ready(function () {
 			}
 		})
 	})
+  
+  */
 
 	$('#replay').click(() => {
 		initGame()
@@ -274,9 +278,12 @@ function GameInput() {
 	}
 
 	// MODIFIERS
-	self.twoWords = function () {
+	/*
+  NOT IMPLEMENTED
+  self.twoWords = function () {
 		console.log('coucou')
 	}
+  */
 
 
 	// Animate Progress bar
@@ -375,7 +382,7 @@ function Word(text, id) {
 
 function Timer() {
 	return {
-		time: 60000,
+		time: 6000,
 		milliseconds: 0,
 		seconds: 0,
 		selector: "#timer",
